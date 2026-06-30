@@ -169,7 +169,7 @@ To keep your deployment hidden from your GitHub repository (preventing Vercel de
    vercel --prod
    ```
 
-Vercel will automatically read [vercel.json](file:///C:/Users/Lenovo/VSC/GitHub/Hsr-checkin/vercel.json) to configure the automated daily cron task:
+Vercel will automatically read [vercel.json](vercel.json) to configure the automated daily cron task:
 
 - Path: `/api/cron`
 - Schedule: `16:01 UTC` (`23:01 WIB`)
