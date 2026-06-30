@@ -124,11 +124,34 @@ To automate your check-ins, you must retrieve your account cookies:
 
 ---
 
-## Deployment to Vercel
+## Deployment to Vercel (via Vercel CLI)
 
-1. Import this repository into your Vercel Dashboard.
-2. In the project settings, add all the environment variables defined in your `.env.local`.
-3. Vercel will automatically read [vercel.json](file:///C:/Users/Lenovo/VSC/GitHub/Hsr-checkin/vercel.json) and set up the automated daily cron task:
-   - Path: `/api/cron`
-   - Schedule: `16:01 UTC` (`23:01 WIB`)
-4. Verify that Vercel automatically passes the `CRON_SECRET` variable to the server environment so that the secure cron trigger executes successfully.
+To keep your deployment hidden from your GitHub repository (preventing Vercel deployment checks, comments, or environment tags from showing on GitHub), do **not** use the default Vercel-GitHub Git integration. Instead, deploy directly from your local terminal using **Vercel CLI**:
+
+1. Install Vercel CLI globally:
+   ```bash
+   npm install -g vercel
+   ```
+2. Log in to your Vercel account:
+   ```bash
+   vercel login
+   ```
+3. Initialize and link the project:
+   ```bash
+   vercel
+   ```
+   *(Follow the prompts to link to your account/team and configure default settings).*
+4. Add all environment variables from `.env.local` to Vercel via the Vercel Dashboard (Settings -> Environment Variables) or via Vercel CLI:
+   ```bash
+   vercel env add <KEY> <VALUE>
+   ```
+5. Deploy to production:
+   ```bash
+   vercel --prod
+   ```
+
+Vercel will automatically read [vercel.json](file:///C:/Users/Lenovo/VSC/GitHub/Hsr-checkin/vercel.json) to configure the automated daily cron task:
+- Path: `/api/cron`
+- Schedule: `16:01 UTC` (`23:01 WIB`)
+- Trigger verification: Managed automatically by Vercel using the project's `CRON_SECRET` token.
+
