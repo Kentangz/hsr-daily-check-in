@@ -103,10 +103,28 @@ export default function AccountDetailPage() {
     }
   };
 
-  // Get current month details for calendar
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth() + 1;
-  const currentYear = currentDate.getFullYear();
+  // Get current month details for calendar in UTC+8 timezone
+  const getHoyolabMonthYear = () => {
+    try {
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Shanghai',
+        year: 'numeric',
+        month: 'numeric'
+      });
+      const parts = formatter.formatToParts(new Date());
+      return {
+        month: parseInt(parts.find(p => p.type === 'month').value, 10),
+        year: parseInt(parts.find(p => p.type === 'year').value, 10)
+      };
+    } catch (e) {
+      const d = new Date();
+      return {
+        month: d.getMonth() + 1,
+        year: d.getFullYear()
+      };
+    }
+  };
+  const { month: currentMonth, year: currentYear } = getHoyolabMonthYear();
 
   // Get history logs to pass as events to Calendar (we can fetch it on mount)
   const [logs, setLogs] = useState([]);

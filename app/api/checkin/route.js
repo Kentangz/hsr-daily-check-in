@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { verifySession } from '@/lib/auth';
 import { decrypt } from '@/lib/crypto';
-import { performCheckin, getSignInfo, getMonthlyRewards } from '@/lib/hoyolab';
+import { performCheckin, getSignInfo, getMonthlyRewards, getHoyolabTodayStr } from '@/lib/hoyolab';
 
 // Helper to run checkin for a single account
 async function processAccountCheckin(account) {
@@ -18,7 +18,7 @@ async function processAccountCheckin(account) {
     await supabase.from('checkin_logs').insert([
       {
         account_id: accountId,
-        check_date: new Date().toISOString().split('T')[0],
+        check_date: getHoyolabTodayStr(),
         success: false,
         message: errorMsg
       }
@@ -95,7 +95,7 @@ async function processAccountCheckin(account) {
       };
     } catch (hError) {
       // If sign info or reward fetching fails, still log a partial success
-      const fallbackDate = new Date().toISOString().split('T')[0];
+      const fallbackDate = getHoyolabTodayStr();
       await supabase.from('checkin_logs').insert([
         {
           account_id: accountId,
@@ -114,7 +114,7 @@ async function processAccountCheckin(account) {
     }
   } else {
     // Check-in failed
-    const checkDate = new Date().toISOString().split('T')[0];
+    const checkDate = getHoyolabTodayStr();
     await supabase.from('checkin_logs').insert([
       {
         account_id: accountId,
