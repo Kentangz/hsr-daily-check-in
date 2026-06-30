@@ -38,15 +38,11 @@ export async function GET(request) {
     
     // Call HoYoLAB
     try {
-      const { searchParams } = new URL(request.url);
-      const requestedMonth = searchParams.get('month'); // "YYYY-MM" format if provided, otherwise current month
-      
       const rewardsResult = await getMonthlyRewards(ltuid, ltoken);
       
       // Determine month string "YYYY-MM"
       const date = new Date();
-      const currentMonthStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      const monthLabel = requestedMonth || currentMonthStr;
+      const monthLabel = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
       
       return NextResponse.json({
         month: monthLabel,

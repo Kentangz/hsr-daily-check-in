@@ -176,9 +176,21 @@ export async function POST(request) {
     }
     
     // Run checkins in parallel
-    const results = await Promise.all(
+    const rawResults = await Promise.allSettled(
       accountsToProcess.map(acc => processAccountCheckin(acc))
     );
+    const results = rawResults.map((res, index) => {
+      if (res.status === 'fulfilled') {
+        return res.value;
+      } else {
+        return {
+          accountId: accountsToProcess[index].id,
+          nickname: accountsToProcess[index].nickname,
+          success: false,
+          message: `Internal error: ${res.reason?.message || 'Unknown reason'}`
+        };
+      }
+    });
     
     return NextResponse.json({ results }, { status: 200 });
   } catch (error) {

@@ -129,29 +129,38 @@ To automate your check-ins, you must retrieve your account cookies:
 To keep your deployment hidden from your GitHub repository (preventing Vercel deployment checks, comments, or environment tags from showing on GitHub), do **not** use the default Vercel-GitHub Git integration. Instead, deploy directly from your local terminal using **Vercel CLI**:
 
 1. Install Vercel CLI globally:
+
    ```bash
    npm install -g vercel
    ```
+
 2. Log in to your Vercel account:
+
    ```bash
    vercel login
    ```
+
 3. Initialize and link the project:
+
    ```bash
    vercel
    ```
+
    *(Follow the prompts to link to your account/team and configure default settings).*
 4. Add all environment variables from `.env.local` to Vercel via the Vercel Dashboard (Settings -> Environment Variables) or via Vercel CLI:
+
    ```bash
    vercel env add <KEY> <VALUE>
    ```
+
 5. Deploy to production:
+
    ```bash
    vercel --prod
    ```
 
 Vercel will automatically read [vercel.json](file:///C:/Users/Lenovo/VSC/GitHub/Hsr-checkin/vercel.json) to configure the automated daily cron task:
+
 - Path: `/api/cron`
 - Schedule: `16:01 UTC` (`23:01 WIB`)
 - Trigger verification: Managed automatically by Vercel using the project's `CRON_SECRET` token.
-

@@ -1,14 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Calendar from '@/components/Calendar';
 import RewardList from '@/components/RewardList';
 import HistoryTable from '@/components/HistoryTable';
 import { useToast } from '@/components/Toast';
 
-export default function AccountDetailPage({ params }) {
-  const { accountId } = params;
+export default function AccountDetailPage() {
+  const params = useParams();
+  const accountId = params?.accountId;
   const [account, setAccount] = useState(null);
   const [signInfo, setSignInfo] = useState(null);
   const [rewards, setRewards] = useState([]);

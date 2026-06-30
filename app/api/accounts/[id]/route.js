@@ -10,7 +10,7 @@ export async function PATCH(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const { id } = params;
+    const { id } = await params;
     if (!id) {
       return NextResponse.json({ error: 'Account ID is required' }, { status: 400 });
     }
@@ -65,7 +65,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const { id } = params;
+    const { id } = await params;
     if (!id) {
       return NextResponse.json({ error: 'Account ID is required' }, { status: 400 });
     }
