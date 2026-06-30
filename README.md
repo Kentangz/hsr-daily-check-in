@@ -1,6 +1,6 @@
 # Honkai: Star Rail Auto Check-in Dashboard
 
-A self-hosted, secure dashboard to manage and automate daily check-ins for multiple Honkai: Star Rail accounts on HoYoLAB. Featuring a clean, high-contrast dark theme aligned with the WattVision design system.
+A self-hosted, secure dashboard to manage and automate daily check-ins for multiple Honkai: Star Rail accounts on HoYoLAB. Built with Next.js, Supabase, and AES-256-GCM encryption — your cookies never leave your own server.
 
 ## Features
 
@@ -9,6 +9,14 @@ A self-hosted, secure dashboard to manage and automate daily check-ins for multi
 - **Secure Storage**: Cookies (`ltoken_v2` and `ltuid_v2`) are stored in Supabase encrypted using AES-256-GCM.
 - **Detailed History & Calendar**: Track check-in status and monthly rewards in a unified calendar.
 - **Responsive Web Design**: Mobile-friendly layout with fluid layout adjustments.
+
+---
+
+## Quick Deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Kentangz/hsr-daily-check-in&env=ADMIN_PASSWORD,JWT_SECRET,ENCRYPTION_KEY,CRON_SECRET,NEXT_PUBLIC_SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY&envDescription=Required%20environment%20variables%20for%20HSR%20Auto%20Check-in&project-name=hsr-checkin)
+
+> **Note**: You still need to create a Supabase project and run the SQL schema before the app will work. See [Database Schema Setup](#3-database-schema-setup) below.
 
 ---
 
@@ -33,7 +41,7 @@ A self-hosted, secure dashboard to manage and automate daily check-ins for multi
 Clone the repository and install the dependencies:
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Kentangz/hsr-daily-check-in.git
 cd Hsr-checkin
 npm install
 ```
@@ -99,7 +107,7 @@ openssl rand -hex 32
 
 ### 5. Running the App locally
 
-To compile the webpack cache and start the local Next.js server:
+Start the development server:
 
 ```bash
 npm run dev
@@ -150,8 +158,10 @@ To keep your deployment hidden from your GitHub repository (preventing Vercel de
 4. Add all environment variables from `.env.local` to Vercel via the Vercel Dashboard (Settings -> Environment Variables) or via Vercel CLI:
 
    ```bash
-   vercel env add <KEY> <VALUE>
+   vercel env add ADMIN_PASSWORD
    ```
+
+   *(CLI will prompt you to enter the value and select the environment: Production/Preview/Development).*
 
 5. Deploy to production:
 
@@ -164,3 +174,15 @@ Vercel will automatically read [vercel.json](file:///C:/Users/Lenovo/VSC/GitHub/
 - Path: `/api/cron`
 - Schedule: `16:01 UTC` (`23:01 WIB`)
 - Trigger verification: Managed automatically by Vercel using the project's `CRON_SECRET` token.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## Disclaimer
+
+This tool automates the HoYoLAB daily check-in process. Use at your own risk. The developers are not responsible for any account restrictions that may result from using this tool. HoYoLAB's terms of service may prohibit automated access.
