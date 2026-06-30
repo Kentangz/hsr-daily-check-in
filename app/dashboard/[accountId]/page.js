@@ -133,8 +133,8 @@ export default function AccountDetailPage() {
       <div>
         <Header showBack={true} />
         <div style={{ textAlign: 'center', padding: '100px 0', color: 'var(--color-text-muted)' }}>
-          <span style={{ fontSize: '24px' }}>🌌</span>
-          <p style={{ marginTop: '8px' }}>Loading trailblazer details...</p>
+          <img src="/honkai-star-rail-hsr.gif" alt="Loading..." style={{ width: '50px', height: '50px', display: 'block', margin: '0 auto 8px' }} />
+          <p>Loading trailblazer details...</p>
         </div>
       </div>
     );

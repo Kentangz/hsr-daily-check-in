@@ -273,8 +273,8 @@ export default function DashboardPage() {
 
         {loading ? (
           <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--color-text-muted)' }}>
-            <span style={{ fontSize: '24px' }}>🌌</span>
-            <p style={{ marginTop: '8px' }}>Loading trailblazers...</p>
+            <img src="/honkai-star-rail-hsr.gif" alt="Loading..." style={{ width: '50px', height: '50px', display: 'block', margin: '0 auto 8px' }} />
+            <p>Loading trailblazers...</p>
           </div>
         ) : accounts.length === 0 ? (
           <div className="glass-panel empty-state" style={{ marginBottom: '40px' }}>
