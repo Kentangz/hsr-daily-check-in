@@ -7,6 +7,10 @@ import { performCheckin, getSignInfo, getMonthlyRewards } from '@/lib/hoyolab';
 async function cronCheckinWithRetry(account) {
   const accountId = account.id;
   const nickname = account.nickname;
+
+  // Add random initial jitter (1s - 15s) to prevent simultaneous bot signature requests
+  const jitter = Math.floor(Math.random() * 14000) + 1000;
+  await new Promise(resolve => setTimeout(resolve, jitter));
   
   let ltuid, ltoken;
   try {

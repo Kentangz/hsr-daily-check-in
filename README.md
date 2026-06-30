@@ -6,6 +6,7 @@ A self-hosted, secure dashboard to manage and automate daily check-ins for multi
 
 - **Multi-Account Support**: Manage multiple HoYoLAB accounts simultaneously.
 - **Automated Daily Check-ins**: Integrates with Vercel Cron to trigger check-ins daily (scheduled at 16:01 UTC / 23:01 WIB).
+- **Jitter & User-Agent Rotation**: Staggers API calls with a randomized initial delay (1s - 15s) and assigns a stable, hashed User-Agent per account to prevent simultaneous request footprints and fingerprint tracking.
 - **Secure Storage**: Cookies (`ltoken_v2` and `ltuid_v2`) are stored in Supabase encrypted using AES-256-GCM.
 - **Detailed History & Calendar**: Track check-in status and monthly rewards in a unified calendar.
 - **Responsive Web Design**: Mobile-friendly layout with fluid layout adjustments.
@@ -185,4 +186,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Disclaimer
 
-This tool automates the HoYoLAB daily check-in process. Use at your own risk. The developers are not responsible for any account restrictions that may result from using this tool. HoYoLAB's terms of service may prohibit automated access.
+This tool automates the HoYoLAB daily check-in process. Use at your own risk. The developers are not responsible for any account restrictions that may result from using this tool. HoYoLAB's terms of service may prohibit automated access. For a comprehensive overview of security considerations and ToS implications, please read our [Security and Risks Analysis](SECURITY_AND_RISKS.md).
