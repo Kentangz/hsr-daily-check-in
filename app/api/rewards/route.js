@@ -41,9 +41,23 @@ export async function GET(request) {
       const rewardsResult = await getMonthlyRewards(ltuid, ltoken);
       
       // Determine month string "YYYY-MM"
-      const date = new Date();
-      const monthLabel = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      
+      // Determine month string "YYYY-MM" in UTC+8 timezone
+      let year, month;
+      try {
+        const formatter = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'Asia/Shanghai',
+          year: 'numeric',
+          month: 'numeric'
+        });
+        const parts = formatter.formatToParts(new Date());
+        year = parts.find(p => p.type === 'year').value;
+        month = String(parts.find(p => p.type === 'month').value).padStart(2, '0');
+      } catch (e) {
+        const d = new Date();
+        year = d.getFullYear();
+        month = String(d.getMonth() + 1).padStart(2, '0');
+      }
+      const monthLabel = `${year}-${month}`;\n      
       return NextResponse.json({
         month: monthLabel,
         rewards: rewardsResult.rewards

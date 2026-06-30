@@ -13,22 +13,52 @@ export default function Calendar({ logs = [], month, year }) {
   const logsMap = {};
   logs.forEach(log => {
     if (log.check_date) {
-      // Parse day number from check_date string (e.g. "2026-06-30" -> 30)
-      const dayNum = parseInt(log.check_date.split('-')[2], 10);
-      // Save status (only true/success overrides failures to prevent mislabeling)
-      if (!logsMap[dayNum] || log.success) {
-        logsMap[dayNum] = {
-          success: log.success,
-          reward_name: log.reward_name,
-          reward_icon: log.reward_icon
-        };
+      // Parse year, month, and day number from check_date string (e.g. "2026-06-30")
+      const parts = log.check_date.split('-');
+      const logYear = parseInt(parts[0], 10);
+      const logMonth = parseInt(parts[1], 10);
+      const logDay = parseInt(parts[2], 10);
+
+      // Only map logs that match the current month and year being displayed
+      if (logYear === year && logMonth === month) {
+        // Save status (only true/success overrides failures to prevent mislabeling)
+        if (!logsMap[logDay] || log.success) {
+          logsMap[logDay] = {
+            success: log.success,
+            reward_name: log.reward_name,
+            reward_icon: log.reward_icon
+          };
+        }
       }
     }
   });
 
-  const today = new Date();
-  const isCurrentMonth = today.getMonth() + 1 === month && today.getFullYear() === year;
-  const todayDayNum = today.getDate();
+  const getHoyolabDateParts = () => {
+    try {
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Shanghai',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+      });
+      const parts = formatter.formatToParts(new Date());
+      return {
+        year: parseInt(parts.find(p => p.type === 'year').value, 10),
+        month: parseInt(parts.find(p => p.type === 'month').value, 10),
+        day: parseInt(parts.find(p => p.type === 'day').value, 10)
+      };
+    } catch (e) {
+      const todayObj = new Date();
+      return {
+        year: todayObj.getFullYear(),
+        month: todayObj.getMonth() + 1,
+        day: todayObj.getDate()
+      };
+    }
+  };
+  const hoyolabToday = getHoyolabDateParts();
+  const isCurrentMonth = hoyolabToday.month === month && hoyolabToday.year === year;
+  const todayDayNum = hoyolabToday.day;
 
   // Build grid cells
   const cells = [];

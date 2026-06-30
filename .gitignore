@@ -38,3 +38,5 @@ image.png
 
 # Project documentation
 docs/
+.vercel
+.env*

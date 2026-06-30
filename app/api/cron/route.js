@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { decrypt } from '@/lib/crypto';
-import { performCheckin, getSignInfo, getMonthlyRewards } from '@/lib/hoyolab';
+import { performCheckin, getSignInfo, getMonthlyRewards, getHoyolabTodayStr } from '@/lib/hoyolab';
 
 // Helper for check-in execution with exponential backoff retry (up to 3 retries)
 async function cronCheckinWithRetry(account) {
@@ -21,7 +21,7 @@ async function cronCheckinWithRetry(account) {
     await supabase.from('checkin_logs').insert([
       {
         account_id: accountId,
-        check_date: new Date().toISOString().split('T')[0],
+        check_date: getHoyolabTodayStr(),
         success: false,
         message: errorMsg
       }
@@ -117,7 +117,7 @@ async function cronCheckinWithRetry(account) {
         } : null
       };
     } catch (hError) {
-      const fallbackDate = new Date().toISOString().split('T')[0];
+      const fallbackDate = getHoyolabTodayStr();
       await supabase.from('checkin_logs').insert([
         {
           account_id: accountId,
@@ -136,7 +136,7 @@ async function cronCheckinWithRetry(account) {
     }
   } else {
     // Succeeded checkin failed after all retries
-    const checkDate = new Date().toISOString().split('T')[0];
+    const checkDate = getHoyolabTodayStr();
     await supabase.from('checkin_logs').insert([
       {
         account_id: accountId,

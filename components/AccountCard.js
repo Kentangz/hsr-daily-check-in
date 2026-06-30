@@ -6,8 +6,26 @@ import { useRouter } from 'next/navigation';
 export default function AccountCard({ account, onToggle, onDelete, onCheckin }) {
   const router = useRouter();
   
-  // Get current date string in local timezone (YYYY-MM-DD)
-  const todayStr = new Date().toISOString().split('T')[0];
+  // Get current date string in UTC+8 timezone (Asia/Shanghai) to align with HoYoLAB server reset
+  const getHoyolabTodayStr = () => {
+    try {
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Shanghai',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+      const parts = formatter.formatToParts(new Date());
+      const year = parts.find(p => p.type === 'year').value;
+      const month = parts.find(p => p.type === 'month').value;
+      const day = parts.find(p => p.type === 'day').value;
+      return `${year}-${month}-${day}`;
+    } catch (e) {
+      return new Date().toISOString().split('T')[0];
+    }
+  };
+
+  const todayStr = getHoyolabTodayStr();
   
   const lastCheckin = account.last_checkin;
   const isToday = lastCheckin && lastCheckin.date === todayStr;
@@ -87,9 +105,7 @@ export default function AccountCard({ account, onToggle, onDelete, onCheckin }) 
           style={{ flex: 2 }}
           onClick={() => onCheckin(account.id)}
           disabled={isSuccessToday}
-        >
-          {isSuccessToday ? 'Checked In' : 'Check-in'}
-        </button>
+        >\n          {isSuccessToday ? 'Checked In' : 'Check-in'}\n        </button>
         <button
           className="btn"
           style={{ flex: 1.5 }}
